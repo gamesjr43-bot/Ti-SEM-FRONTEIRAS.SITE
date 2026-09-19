@@ -1,0 +1,27 @@
+rules_version = '2';
+
+// Regras para o projeto ti-sem-fronteiras-f0fa9.
+// Leitura pública (necessária para o site estático no GitHub Pages, que
+// usa o SDK Web com a apiKey pública — normal e seguro para dados não
+// sensíveis). Escrita bloqueada: só o protótipo Streamlit escreve, e ele
+// usa o Admin SDK com service account, que ignora estas regras.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /paises/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /vagas/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /radar_tecnologias/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /trilhas_qualificacao/{doc} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}

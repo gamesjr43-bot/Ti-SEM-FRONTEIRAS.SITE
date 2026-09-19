@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TI Sem Fronteiras — Mapeamento de Oportunidades em TI</title>
+<meta name="description" content="Plataforma para estudantes e profissionais de TI planejarem sua inserção no mercado internacional de trabalho.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="#inicio">
+    <span class="brand-mark">✈</span>
+    <span class="brand-text">TI Sem Fronteiras</span>
+  </a>
+  <nav class="tabs" aria-label="Navegação principal">
+    <a href="#inicio" class="tab" data-route="inicio">Início</a>
+    <a href="#mundodev" class="tab" data-route="mundodev">MundoDev</a>
+    <a href="#globalit" class="tab" data-route="globalit">GlobalIT Jobs</a>
+  </nav>
+</header>
+
+<main id="app">
+
+  <!-- ===================== INÍCIO ===================== -->
+  <section id="view-inicio" class="view">
+    <div class="hero">
+      <p class="hero-eyebrow">Mapeamento de Oportunidades em TI</p>
+      <h1>Sua carreira em tecnologia,<br>sem fronteiras.</h1>
+      <p class="hero-lede">
+        Escolher onde morar e conquistar a vaga certa são as duas etapas de uma
+        carreira internacional em TI. Este site reúne o que normalmente exigiria
+        consultar dezenas de fontes espalhadas — em um só lugar.
+      </p>
+    </div>
+
+    <div class="stats" role="list">
+      <div class="stat" role="listitem"><span class="stat-num" id="stat-paises">0</span><span class="stat-label">países mapeados</span></div>
+      <div class="stat" role="listitem"><span class="stat-num" id="stat-vagas">0</span><span class="stat-label">vagas monitoradas</span></div>
+      <div class="stat" role="listitem"><span class="stat-num" id="stat-tech">0</span><span class="stat-label">tecnologias no radar</span></div>
+    </div>
+
+    <div class="split">
+      <article class="feature feature-mundodev">
+        <p class="feature-kicker">Função I</p>
+        <h2>MundoDev</h2>
+        <p class="feature-desc">Inteligência geográfica: para onde ir, quanto custa viver lá, e o que o visto exige.</p>
+        <ul class="feature-list">
+          <li>Mapeamento de países por região e demanda</li>
+          <li>Custo de vida, moradia, saúde e integração cultural</li>
+          <li>Tipos de visto e dificuldade de regularização</li>
+        </ul>
+        <a href="#mundodev" class="feature-link">Explorar países →</a>
+      </article>
+
+      <article class="feature feature-globalit">
+        <p class="feature-kicker">Função II</p>
+        <h2>GlobalIT Jobs</h2>
+        <p class="feature-desc">Inteligência de mercado: quais vagas existem, e o que estudar para chegar nelas.</p>
+        <ul class="feature-list">
+          <li>Vagas reais filtráveis por país, senioridade e modalidade</li>
+          <li>Radar das tecnologias mais exigidas no exterior</li>
+          <li>Trilhas de certificação por área de atuação</li>
+        </ul>
+        <a href="#globalit" class="feature-link">Ver vagas →</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== MUNDODEV ===================== -->
+  <section id="view-mundodev" class="view" hidden>
+    <div class="view-header">
+      <p class="view-kicker">Função I — Inteligência Geográfica</p>
+      <h1>MundoDev</h1>
+    </div>
+
+    <div class="toolbar">
+      <label for="filtro-regiao">Região</label>
+      <select id="filtro-regiao"></select>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">Salário médio em TI por país (USD/mês, estimado)</h3>
+      <div id="chart-paises" class="barchart"></div>
+    </div>
+
+    <div class="country-picker">
+      <label for="select-pais">Ver detalhes de:</label>
+      <select id="select-pais"></select>
+    </div>
+
+    <div id="country-card" class="stamp-card"></div>
+  </section>
+
+  <!-- ===================== GLOBALIT JOBS ===================== -->
+  <section id="view-globalit" class="view" hidden>
+    <div class="view-header">
+      <p class="view-kicker">Função II — Inteligência de Mercado</p>
+      <h1>GlobalIT Jobs</h1>
+    </div>
+
+    <nav class="subtabs" aria-label="Seções de GlobalIT Jobs">
+      <button class="subtab is-active" data-subview="vagas" type="button">Vagas</button>
+      <button class="subtab" data-subview="radar" type="button">Radar de Tecnologias</button>
+      <button class="subtab" data-subview="trilhas" type="button">Trilhas de Qualificação</button>
+    </nav>
+
+    <!-- Vagas -->
+    <div id="sub-vagas" class="subview">
+      <div class="toolbar toolbar-jobs">
+        <div>
+          <label for="filtro-pais">País</label>
+          <select id="filtro-pais"></select>
+        </div>
+        <div>
+          <label for="filtro-senioridade">Senioridade</label>
+          <select id="filtro-senioridade"></select>
+        </div>
+        <div>
+          <label for="filtro-modalidade">Modalidade</label>
+          <select id="filtro-modalidade"></select>
+        </div>
+      </div>
+      <p id="vagas-count" class="muted"></p>
+      <div id="vagas-list" class="tickets"></div>
+    </div>
+
+    <!-- Radar -->
+    <div id="sub-radar" class="subview" hidden>
+      <div class="panel">
+        <h3 class="panel-title">Tecnologias mais demandadas no exterior</h3>
+        <div id="chart-radar" class="barchart barchart-radar"></div>
+      </div>
+    </div>
+
+    <!-- Trilhas -->
+    <div id="sub-trilhas" class="subview" hidden>
+      <div id="trilhas-list" class="accordion"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>TI Sem Fronteiras — Protótipo acadêmico, SIRITEC · IFS Campus Socorro. Dados de demonstração.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script type="module" src="firebase-data.js"></script>
+</body>
+</html>
