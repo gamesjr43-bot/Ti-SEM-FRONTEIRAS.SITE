@@ -1,6 +1,14 @@
 // =====================================================================
 // Conecta o site estático ao MESMO banco Firestore usado pelo protótipo
-// Streamlit (firestore_data.py) — projeto "ti-sem-fronteiras-f0fa9".
+// Streamlit (firestore_data.py / seed_firestore.py) — projeto
+// "ti-sem-fronteiras-f0fa9". As 4 coleções lidas aqui são as mesmas que
+// o app.py lê, garantindo que site e app mostrem sempre a mesma informação.
+//
+// IMPORTANTE: os documentos no Firestore usam os nomes de campo do
+// protótipo Python (snake_case, ex: "custo_vida_mensal_usd"), diferentes
+// dos nomes usados internamente pelo site (camelCase, ex: "custoVida").
+// A função normalizarPais/normalizarVaga abaixo faz essa tradução — é o
+// único lugar do projeto que precisa conhecer os dois formatos.
 //
 // Se a config abaixo não estiver preenchida, ou se a leitura falhar por
 // qualquer motivo, o site cai automaticamente para os dados locais de
@@ -34,22 +42,80 @@ const firebaseConfig = {
   appId: "COLE_AQUI_SEU_APP_ID",
 };
 
-const COLECOES = {
-  PAISES: "paises",
-  VAGAS: "vagas",
-  RADAR_TECNOLOGIAS: "radar_tecnologias",
-  TRILHAS_QUALIFICACAO: "trilhas_qualificacao",
+// -----------------------------------------------------------------
+// 2) Bandeiras: o Firestore (schema do protótipo Python) não guarda
+//    emoji de bandeira, então mapeamos por nome do país. País novo que
+//    não estiver aqui cai no globo 🌐 em vez de quebrar.
+// -----------------------------------------------------------------
+const BANDEIRAS = {
+  "Portugal": "🇵🇹",
+  "Alemanha": "🇩🇪",
+  "Canadá": "🇨🇦",
+  "Irlanda": "🇮🇪",
+  "Espanha": "🇪🇸",
+  "Emirados Árabes Unidos": "🇦🇪",
 };
 
-async function carregarColecao(db, nome) {
+// -----------------------------------------------------------------
+// 3) Normalizadores: schema do Firestore (igual ao data.py) -> schema
+//    usado pelo app.js (igual ao data.js). radar_tecnologias e
+//    trilhas_qualificacao já usam os mesmos nomes de campo dos dois
+//    lados, então não precisam de tradução.
+// -----------------------------------------------------------------
+function normalizarPais(doc) {
+  return {
+    pais: doc.pais,
+    regiao: doc.regiao,
+    demanda: doc.demanda_ti,
+    custoVida: doc.custo_vida_mensal_usd,
+    salario: doc.salario_medio_ti_usd,
+    idioma: doc.idioma,
+    visto: doc.visto,
+    dificuldadeVisto: doc.dificuldade_visto,
+    resumo: doc.resumo,
+    bandeira: BANDEIRAS[doc.pais] || "🌐",
+  };
+}
+
+function normalizarVaga(doc) {
+  return {
+    titulo: doc.titulo,
+    empresa: doc.empresa,
+    pais: doc.pais,
+    modalidade: doc.modalidade,
+    senioridade: doc.senioridade,
+    stack: doc.stack,
+    salario: doc.salario_faixa_usd,
+  };
+}
+
+const COLECOES = {
+  paises: normalizarPais,
+  vagas: normalizarVaga,
+  radar_tecnologias: (doc) => doc,
+  trilhas_qualificacao: (doc) => doc,
+};
+
+async function carregarColecao(db, nome, normalizar) {
   try {
     const snap = await getDocs(collection(db, nome));
-    const registros = snap.docs.map((doc) => doc.data());
+    const registros = snap.docs.map((doc) => normalizar(doc.data()));
     return registros.length ? registros : null; // vazio -> mantém fallback
   } catch (erro) {
     console.warn(`[Firestore] Falha ao ler a coleção "${nome}":`, erro.message);
     return null;
   }
+}
+
+function marcarFonteDados(modo) {
+  const badge = document.getElementById("fonte-dados");
+  if (!badge) return;
+  badge.hidden = false;
+  badge.dataset.modo = modo;
+  badge.textContent =
+    modo === "firestore"
+      ? "🔥 Mesmos dados do app (Firestore)"
+      : "📦 Dados locais de demonstração";
 }
 
 // Promise global que o app.js aguarda antes de renderizar a página.
@@ -62,6 +128,7 @@ window.dadosProntos = (async () => {
     console.info(
       "[Firestore] firebaseConfig ainda não preenchida em firebase-data.js — usando dados locais de demonstração (data.js)."
     );
+    marcarFonteDados("local");
     return;
   }
 
@@ -69,12 +136,11 @@ window.dadosProntos = (async () => {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const [paises, vagas, radar, trilhas] = await Promise.all([
-      carregarColecao(db, COLECOES.PAISES),
-      carregarColecao(db, COLECOES.VAGAS),
-      carregarColecao(db, COLECOES.RADAR_TECNOLOGIAS),
-      carregarColecao(db, COLECOES.TRILHAS_QUALIFICACAO),
-    ]);
+    const [paises, vagas, radar, trilhas] = await Promise.all(
+      Object.entries(COLECOES).map(([nome, normalizar]) =>
+        carregarColecao(db, nome, normalizar)
+      )
+    );
 
     if (paises) window.PAISES = paises;
     if (vagas) window.VAGAS = vagas;
@@ -82,12 +148,14 @@ window.dadosProntos = (async () => {
     if (trilhas) window.TRILHAS_QUALIFICACAO = trilhas;
 
     const tudoVeioDoFirestore = paises && vagas && radar && trilhas;
+    marcarFonteDados(tudoVeioDoFirestore ? "firestore" : "local");
     console.info(
       tudoVeioDoFirestore
         ? `[Firestore] Conectado ao mesmo banco do protótipo (${firebaseConfig.projectId}).`
         : "[Firestore] Conectado, mas alguma coleção veio vazia — usando fallback local para ela."
     );
   } catch (erro) {
+    marcarFonteDados("local");
     console.warn(
       "[Firestore] Não foi possível conectar — usando dados locais de demonstração (data.js).",
       erro
