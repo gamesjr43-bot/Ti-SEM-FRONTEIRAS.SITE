@@ -1,28 +1,38 @@
 # TI Sem Fronteiras — Site estático (GitHub Pages)
 
-Versão 100% estática (HTML + CSS + JavaScript puro, sem build, sem
-dependências externas) do protótipo TI Sem Fronteiras, pronta para
-hospedar no **GitHub Pages**.
+Versão 100% estática (HTML + CSS + JavaScript puro, sem build) do
+protótipo TI Sem Fronteiras, pronta para hospedar no **GitHub Pages**.
 
 ## Estrutura
 
 - `index.html` — página única com as 3 seções (Início, MundoDev, GlobalIT Jobs),
   navegadas via âncora (`#inicio`, `#mundodev`, `#globalit`).
 - `styles.css` — identidade visual (cores, tipografia Fraunces + IBM Plex Sans).
-- `data.js` — dados de demonstração (países, vagas, tecnologias, trilhas).
-- `app.js` — toda a lógica: navegação, filtros, gráficos de barra e accordion.
+- `data.js` — dados de demonstração/fallback (países, vagas, tecnologias, trilhas).
+- `helpers.js` — utilitários genéricos (popular `<select>`, gráfico de barras).
+- `router.js` — navegação entre as 3 seções via hash da URL.
+- `globo.js` — mapa-múndi em projeção ortográfica (D3), base compartilhada
+  pelos dois globos: o de MundoDev (colorido por salário) e o de vagas em
+  GlobalIT Jobs (marcadores por país).
+- `pagina-inicio.js` / `pagina-mundodev.js` / `pagina-globalit.js` — uma
+  página por módulo.
+- `boot.js` — inicializa tudo quando o DOM carrega.
+- `firebase-data.js` — lê os mesmos dados do Firestore usados pelo
+  protótipo Streamlit (ver seção abaixo).
 
 Não tem backend, não tem build step — é só abrir `index.html` no navegador
-ou publicar os arquivos como estão.
+ou publicar os arquivos como estão. A ordem dos `<script>` no `index.html`
+importa (dados → bibliotecas → helpers/router/globo → páginas → boot →
+firebase); ao adicionar um arquivo novo, respeite essa ordem.
 
 ## Publicar no GitHub Pages
 
-1. Crie um repositório no GitHub (ex: `ti-sem-fronteiras`) e suba estes 4 arquivos
-   (`index.html`, `styles.css`, `data.js`, `app.js`) na raiz do repositório.
+1. Crie um repositório no GitHub (ex: `ti-sem-fronteiras`) e suba todos os
+   arquivos deste pacote na raiz do repositório.
 
    ```bash
    git init
-   git add index.html styles.css data.js app.js README.md
+   git add .
    git commit -m "Site estático TI Sem Fronteiras"
    git branch -M main
    git remote add origin https://github.com/SEU-USUARIO/ti-sem-fronteiras.git
