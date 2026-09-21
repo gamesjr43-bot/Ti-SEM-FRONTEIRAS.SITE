@@ -115,7 +115,7 @@ function iniciarGlobo(container, aoSelecionarPais) {
         tooltip.classList.add("is-visible");
         tooltip.style.left = `${evento.clientX + 14}px`;
         tooltip.style.top = `${evento.clientY + 14}px`;
-        tooltip.innerHTML = `<strong>${dado.bandeira} ${dado.pais}</strong>US$ ${dado.salario.toLocaleString("pt-BR")}/mês · custo US$ ${dado.custoVida.toLocaleString("pt-BR")}/mês`;
+        tooltip.innerHTML = `<strong>${escapeHtml(dado.bandeira)} ${escapeHtml(dado.pais)}</strong>US$ ${dado.salario.toLocaleString("pt-BR")}/mês · custo US$ ${dado.custoVida.toLocaleString("pt-BR")}/mês`;
       })
       .on("mouseleave", () => tooltip.classList.remove("is-visible"))
       .on("click", (evento, d) => {
@@ -182,9 +182,9 @@ function iniciarGloboVagas(container, aoSelecionarPais) {
         tooltip.classList.add("is-visible");
         tooltip.style.left = `${evento.clientX + 14}px`;
         tooltip.style.top = `${evento.clientY + 14}px`;
-        const exemplos = d.vagas.slice(0, 3).map((v) => `${v.titulo} · ${v.empresa}`).join("<br>");
+        const exemplos = d.vagas.slice(0, 3).map((v) => `${escapeHtml(v.titulo)} · ${escapeHtml(v.empresa)}`).join("<br>");
         const resto = d.vagas.length > 3 ? `<br>+${d.vagas.length - 3} vaga(s)` : "";
-        tooltip.innerHTML = `<strong>${d.pais} · ${d.vagas.length} vaga(s)</strong>${exemplos}${resto}`;
+        tooltip.innerHTML = `<strong>${escapeHtml(d.pais)} · ${d.vagas.length} vaga(s)</strong>${exemplos}${resto}`;
       })
       .on("mouseleave", () => tooltip.classList.remove("is-visible"))
       .on("click", (evento, d) => aoSelecionarPais(d.pais));

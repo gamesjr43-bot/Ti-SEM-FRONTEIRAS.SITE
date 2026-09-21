@@ -39,16 +39,16 @@ function iniciarMundoDev() {
     const pais = PAISES.find((p) => p.pais === selectPais.value);
     if (!pais) { cardEl.innerHTML = ""; return; }
     cardEl.innerHTML = `
-      <span class="stamp-flag">${pais.bandeira}</span>
-      <h3 class="stamp-name">${pais.pais}</h3>
+      <span class="stamp-flag">${escapeHtml(pais.bandeira)}</span>
+      <h3 class="stamp-name">${escapeHtml(pais.pais)}</h3>
       <div class="stamp-metrics">
         <div><span class="stamp-metric-num">US$ ${pais.custoVida.toLocaleString("pt-BR")}</span><span class="stamp-metric-label">Custo de vida / mês</span></div>
         <div><span class="stamp-metric-num">US$ ${pais.salario.toLocaleString("pt-BR")}</span><span class="stamp-metric-label">Salário médio TI / mês</span></div>
-        <div><span class="stamp-metric-num">${pais.demanda}</span><span class="stamp-metric-label">Demanda em TI</span></div>
+        <div><span class="stamp-metric-num">${escapeHtml(pais.demanda)}</span><span class="stamp-metric-label">Demanda em TI</span></div>
       </div>
-      <p class="stamp-detail"><strong>Idioma:</strong> ${pais.idioma}</p>
-      <p class="stamp-detail"><strong>Visto recomendado:</strong> ${pais.visto} · Dificuldade: ${pais.dificuldadeVisto}</p>
-      <p class="stamp-summary">${pais.resumo}</p>
+      <p class="stamp-detail"><strong>Idioma:</strong> ${escapeHtml(pais.idioma)}</p>
+      <p class="stamp-detail"><strong>Visto recomendado:</strong> ${escapeHtml(pais.visto)} · Dificuldade: ${escapeHtml(pais.dificuldadeVisto)}</p>
+      <p class="stamp-summary">${escapeHtml(pais.resumo)}</p>
     `;
   }
 

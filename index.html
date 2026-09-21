@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TI Sem Fronteiras — Mapeamento de Oportunidades em TI</title>
 <meta name="description" content="Plataforma para estudantes e profissionais de TI planejarem sua inserção no mercado internacional de trabalho.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20100%20100%22%3E%3Ctext%20y=%22.9em%22%20font-size=%2290%22%3E%F0%9F%8C%90%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -87,9 +87,8 @@
 
     <div class="panel">
       <h3 class="panel-title">Mapa-múndi (visão globo)</h3>
-      <div id="globo-mundodev" class="globo-container"
-           role="img" aria-label="Globo interativo com os países mapeados"></div>
-      <p class="globo-hint">Arraste para girar · toque num país destacado para ver a ficha</p>
+      <div id="globo-mundodev" class="globo-container" aria-hidden="true"></div>
+      <p class="globo-hint">Arraste para girar · toque num país destacado para ver a ficha. Para navegação por teclado ou leitor de tela, use o campo "Ver detalhes de" abaixo, que tem a mesma informação.</p>
     </div>
 
     <div class="panel">
@@ -122,9 +121,8 @@
     <div id="sub-vagas" class="subview">
       <div class="panel">
         <h3 class="panel-title">Mapa-múndi das vagas (visão globo)</h3>
-        <div id="globo-vagas" class="globo-container"
-             role="img" aria-label="Globo interativo com as vagas por país"></div>
-        <p class="globo-hint">Arraste para girar · toque num ponto para filtrar as vagas daquele país</p>
+        <div id="globo-vagas" class="globo-container" aria-hidden="true"></div>
+        <p class="globo-hint">Arraste para girar · toque num ponto para filtrar as vagas daquele país. Para navegação por teclado ou leitor de tela, use o filtro "País" abaixo — a lista de vagas mostra o mesmo resultado.</p>
       </div>
 
       <div class="toolbar toolbar-jobs">

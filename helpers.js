@@ -1,4 +1,18 @@
 // ===================== HELPERS =====================
+
+// Escapa texto antes de injetar em innerHTML — evita XSS caso algum campo
+// (hoje vindo de data.js/Firestore, controlados por nós, mas amanhã podem
+// vir de outra fonte) contenha caracteres HTML.
+function escapeHtml(valor) {
+  if (valor === null || valor === undefined) return "";
+  return String(valor)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
 function criarOpcao(valor, texto) {
   const opt = document.createElement("option");
   opt.value = valor;

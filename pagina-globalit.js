@@ -46,14 +46,14 @@ function iniciarGlobalIT() {
     listaEl.innerHTML = lista.map((v) => `
       <article class="ticket">
         <div>
-          <h3 class="ticket-title">${v.titulo}</h3>
-          <p class="ticket-company">${v.empresa} · ${v.pais}</p>
+          <h3 class="ticket-title">${escapeHtml(v.titulo)}</h3>
+          <p class="ticket-company">${escapeHtml(v.empresa)} · ${escapeHtml(v.pais)}</p>
         </div>
-        <div class="ticket-salary">US$ ${v.salario}/mês</div>
+        <div class="ticket-salary">US$ ${escapeHtml(v.salario)}/mês</div>
         <div class="ticket-meta">
-          <span class="chip">${v.modalidade}</span>
-          <span class="chip">${v.senioridade}</span>
-          ${v.stack.map((s) => `<span class="chip chip-stack">${s}</span>`).join("")}
+          <span class="chip">${escapeHtml(v.modalidade)}</span>
+          <span class="chip">${escapeHtml(v.senioridade)}</span>
+          ${v.stack.map((s) => `<span class="chip chip-stack">${escapeHtml(s)}</span>`).join("")}
         </div>
       </article>
     `).join("") || `<p class="muted">Nenhuma vaga encontrada com esses filtros.</p>`;
@@ -77,13 +77,13 @@ function iniciarGlobalIT() {
   trilhasEl.innerHTML = TRILHAS_QUALIFICACAO.map((t, i) => `
     <div class="accordion-item" data-index="${i}">
       <button class="accordion-trigger" type="button">
-        <span>${t.area} — ${t.competencia}</span>
+        <span>${escapeHtml(t.area)} — ${escapeHtml(t.competencia)}</span>
         <span class="chevron">▾</span>
       </button>
       <div class="accordion-panel">
         <ul class="cert-list">
           ${t.certificacoes.map((c, j) => `
-            <li><label><input type="checkbox" id="cert-${i}-${j}"> ${c}</label></li>
+            <li><label><input type="checkbox" id="cert-${i}-${j}"> ${escapeHtml(c)}</label></li>
           `).join("")}
         </ul>
       </div>
